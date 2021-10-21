@@ -43,6 +43,7 @@ RUN echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/docker-snap
     pip3 install psycopg2~=2.6 && \
     apt-get autoremove -y gcc && \
     apt-get install -y postgresql-client && \
+    sed -i '/snapshot.debian.org/s/^/# /; /deb.debian.org/s/^# //' /etc/apt/sources.list && \
     pip3 install --upgrade pip && pip install -r requirements.txt
 
 ENV PYTHONUNBUFFERED 1
