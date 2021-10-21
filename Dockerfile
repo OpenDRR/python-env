@@ -37,8 +37,9 @@ LABEL org.opencontainers.image.source="https://github.com/opendrr/python-env"
 COPY . .
 
 RUN echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/docker-snapshot.conf && \
-    sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /' /etc/apt/sources.list && \
-    apt-get update && apt-get install -y libpq-dev gcc curl git-lfs gdal-bin python3-pip && \
+    sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /; s/20200720/20200731/' /etc/apt/sources.list && \
+    apt-get update && apt-get dist-upgrade -y && \
+    apt-get install -y libpq-dev gcc curl git-lfs gdal-bin python3-pip && \
     pip3 install psycopg2~=2.6 && \
     apt-get autoremove -y gcc && \
     apt-get install -y postgresql-client && \
