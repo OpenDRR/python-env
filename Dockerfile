@@ -27,23 +27,32 @@
 #
 # =================================================================
 
-FROM debian:sid-20200720-slim
+FROM debian:sid-20201012-slim
 
-LABEL maintainer="Joost van Ulden <joost.vanulden@canada.ca>" 
-
+LABEL org.opencontainers.image.authors="Joost van Ulden <joost.vanulden@canada.ca>, Anthony Fok <anthony.fok@canada.ca>"
 LABEL org.opencontainers.image.source="https://github.com/opendrr/python-env"
+LABEL org.opencontainers.image.version="1.1.0"
+LABEL org.opencontainers.image.vendor="Government of Canada"
+LABEL org.opencontainers.image.licenses="MIT"
 
 # copy required files
 COPY . .
 
 RUN echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/docker-snapshot.conf && \
-    sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /; s/20200720/20200731/' /etc/apt/sources.list && \
-    apt-get update && apt-get dist-upgrade -y && \
-    apt-get install -y libpq-dev gcc curl git-lfs gdal-bin python3-pip && \
-    pip3 install psycopg2~=2.6 && \
-    apt-get autoremove -y gcc && \
-    apt-get install -y postgresql-client && \
-    sed -i '/snapshot.debian.org/s/^/# /; /deb.debian.org/s/^# //' /etc/apt/sources.list && \
-    pip3 install --upgrade pip && pip install -r requirements.txt
+    sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /' /etc/apt/sources.list && \
+    echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
+    echo 'Package: *\n\
+Pin: release n=bullseye\n\
+Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye && \
+    cat /etc/apt/preferences.d/git-in-bullseye && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl gdal-bin postgresql-client \
+        dos2unix eatmydata jq moreutils nano time \
+        python3-numpy python3-pandas python3-psycopg2 python3-psycopg2cffi \
+        python3-requests python3-sqlalchemy pypy3 python3-pip && \
+    apt-get install -y --no-install-recommends -t bullseye git git-lfs && \
+    pip3 install elasticsearch==7.12.0 && \
+    rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED 1
