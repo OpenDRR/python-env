@@ -48,7 +48,7 @@ Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
         curl gdal-bin postgresql-client \
-        dos2unix eatmydata jq moreutils nano time \
+        dos2unix eatmydata jq moreutils nano time xz-utils \
         python3-numpy python3-pandas python3-psycopg2 python3-psycopg2cffi \
         python3-requests python3-sqlalchemy pypy3 python3-pip && \
     apt-get install -y --no-install-recommends -t bullseye git git-lfs && \
