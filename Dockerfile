@@ -52,7 +52,7 @@ Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye && \
         python3-numpy python3-pandas python3-psycopg2 python3-psycopg2cffi \
         python3-requests python3-sqlalchemy pypy3 python3-pip && \
     apt-get install -y --no-install-recommends -t bullseye git git-lfs && \
-    pip3 install elasticsearch==7.16.1 && \
+    pip3 install --upgrade pip && pip install -r requirements.txt
     rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED 1
