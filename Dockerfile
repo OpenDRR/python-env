@@ -31,7 +31,7 @@ FROM debian:sid-20201012-slim
 
 LABEL org.opencontainers.image.authors="Joost van Ulden <joost.vanulden@canada.ca>, Anthony Fok <anthony.fok@canada.ca>"
 LABEL org.opencontainers.image.source="https://github.com/opendrr/python-env"
-LABEL org.opencontainers.image.version="1.1.0"
+LABEL org.opencontainers.image.version="1.1.1"
 LABEL org.opencontainers.image.vendor="Government of Canada"
 LABEL org.opencontainers.image.licenses="MIT"
 
@@ -69,6 +69,11 @@ Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
        git \
        git-lfs \
     && pip3 install elasticsearch==7.16.1 \
+    && curl -fsSL --create-dirs --output /usr/share/keyrings/githubcli-archive-keyring.gpg \
+       https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+       > /etc/apt/sources.list.d/github-cli.list \
+    && apt-get update && apt-get install -y gh \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED 1
