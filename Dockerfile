@@ -2,7 +2,7 @@
 #
 # Author: Joost van Ulden <joost.vanulden@canada.ca>
 #
-# Copyright (c) 2020 Government of Canada
+# Copyright (c) 2020-2022 Government of Canada
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation
@@ -38,21 +38,37 @@ LABEL org.opencontainers.image.licenses="MIT"
 # copy required files
 COPY . .
 
-RUN echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/docker-snapshot.conf && \
-    sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /' /etc/apt/sources.list && \
-    echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
-    echo 'Package: *\n\
+RUN echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/docker-snapshot.conf \
+    && sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /' /etc/apt/sources.list \
+    && echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list \
+    && echo 'Package: *\n\
 Pin: release n=bullseye\n\
-Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye && \
-    cat /etc/apt/preferences.d/git-in-bullseye && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        curl gdal-bin postgresql-client \
-        dos2unix eatmydata jq moreutils nano time xz-utils \
-        python3-numpy python3-pandas python3-psycopg2 python3-psycopg2cffi \
-        python3-requests python3-sqlalchemy pypy3 python3-pip && \
-    apt-get install -y --no-install-recommends -t bullseye git git-lfs && \
-    pip3 install elasticsearch==7.16.1 && \
-    rm -rf /var/lib/apt/lists/*
+Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
+    && cat /etc/apt/preferences.d/git-in-bullseye \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+       curl \
+       dos2unix \
+       eatmydata \
+       gdal-bin \
+       jq \
+       moreutils \
+       nano \
+       postgresql-client \
+       pypy3 \
+       python3-numpy \
+       python3-pandas \
+       python3-psycopg2 \
+       python3-psycopg2cffi \
+       python3-requests \
+       python3-sqlalchemy \
+       python3-pip \
+       time \
+       xz-utils \
+    && apt-get install -y --no-install-recommends -t bullseye \
+       git \
+       git-lfs \
+    && pip3 install elasticsearch==7.16.1 \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED 1
