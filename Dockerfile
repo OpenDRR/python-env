@@ -27,7 +27,7 @@
 #
 # =================================================================
 
-FROM debian:sid-20201012-slim
+FROM debian:sid-20220228-slim
 
 LABEL org.opencontainers.image.authors="Joost van Ulden <joost.vanulden@canada.ca>, Anthony Fok <anthony.fok@canada.ca>"
 LABEL org.opencontainers.image.source="https://github.com/opendrr/python-env"
