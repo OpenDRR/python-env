@@ -31,7 +31,7 @@ FROM debian:sid-20201012-slim
 
 LABEL org.opencontainers.image.authors="Joost van Ulden <joost.vanulden@canada.ca>, Anthony Fok <anthony.fok@canada.ca>"
 LABEL org.opencontainers.image.source="https://github.com/opendrr/python-env"
-LABEL org.opencontainers.image.version="1.2.0"
+LABEL org.opencontainers.image.version="1.2.1"
 LABEL org.opencontainers.image.vendor="Government of Canada"
 LABEL org.opencontainers.image.licenses="MIT"
 
@@ -52,6 +52,7 @@ Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
        moreutils \
        nano \
        postgresql-client \
+       pv \
        pypy3 \
        python3-numpy \
        python3-pandas \
