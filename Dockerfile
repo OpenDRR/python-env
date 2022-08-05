@@ -51,6 +51,7 @@ Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
        jq \
        moreutils \
        nano \
+       p7zip \
        postgresql-client \
        pv \
        pypy3 \
