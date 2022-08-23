@@ -3,6 +3,8 @@
 Docker image for Linux-based Python environment,
 tailored for OpenDRR/opendrr-api pipeline process.
 
+[![GitHub Super-Linter](https://github.com/OpenDRR/python-env/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 ## Updating ghcr.io/opendrr/python-env:edge (nightly build)
 
 1. Push your latest commits to the `master` branch.
