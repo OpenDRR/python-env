@@ -31,28 +31,32 @@ FROM debian:sid-20201012-slim
 
 LABEL org.opencontainers.image.authors="Joost van Ulden <joost.vanulden@canada.ca>, Anthony Fok <anthony.fok@canada.ca>"
 LABEL org.opencontainers.image.source="https://github.com/opendrr/python-env"
-LABEL org.opencontainers.image.version="1.2.2"
+LABEL org.opencontainers.image.version="1.2.3"
 LABEL org.opencontainers.image.vendor="Government of Canada"
 LABEL org.opencontainers.image.licenses="MIT"
 
 RUN echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/docker-snapshot.conf \
     && sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /' /etc/apt/sources.list \
-    && echo "deb http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list \
-    && echo 'Package: *\n\
+    && echo 'deb http://deb.debian.org/debian bullseye main' >> /etc/apt/sources.list \
+    && echo 'deb http://deb.debian.org/debian bullseye-backports main' >> /etc/apt/sources.list \
+    && printf 'Package: *\n\
 Pin: release n=bullseye\n\
 Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
     && cat /etc/apt/preferences.d/git-in-bullseye \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
+       eatmydata \
+    && eatmydata apt-get install -y --no-install-recommends \
+       ca-certificates \
        curl \
        dos2unix \
-       eatmydata \
        gdal-bin \
        jq \
        moreutils \
        nano \
-       p7zip \
+       neovim \
        postgresql-client \
+       procps \
        pv \
        pypy3 \
        python3-numpy \
@@ -64,15 +68,16 @@ Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
        python3-pip \
        time \
        xz-utils \
-    && apt-get install -y --no-install-recommends -t bullseye \
+    && eatmydata apt-get install -y --no-install-recommends -t bullseye-backports \
+       7zip \
        git \
-       git-lfs
-
-RUN curl -fsSL --create-dirs --output /usr/share/keyrings/githubcli-archive-keyring.gpg \
+       git-lfs \
+    && curl -fsSL --create-dirs --output /usr/share/keyrings/githubcli-archive-keyring.gpg \
        https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
        > /etc/apt/sources.list.d/github-cli.list \
-    && apt-get update && apt-get install -y --no-install-recommends gh \
+    && eatmydata apt-get update \
+    && eatmydata apt-get install -y --no-install-recommends gh \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp
