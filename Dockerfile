@@ -31,10 +31,11 @@ FROM debian:sid-20201012-slim
 
 LABEL org.opencontainers.image.authors="Joost van Ulden <joost.vanulden@canada.ca>, Anthony Fok <anthony.fok@canada.ca>"
 LABEL org.opencontainers.image.source="https://github.com/opendrr/python-env"
-LABEL org.opencontainers.image.version="1.2.3"
+LABEL org.opencontainers.image.version="1.2.4"
 LABEL org.opencontainers.image.vendor="Government of Canada"
 LABEL org.opencontainers.image.licenses="MIT"
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/docker-snapshot.conf \
     && sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /' /etc/apt/sources.list \
     && echo 'deb http://deb.debian.org/debian bullseye main' >> /etc/apt/sources.list \
@@ -51,11 +52,11 @@ Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
        curl \
        dos2unix \
        gdal-bin \
+       gpg \
        jq \
        moreutils \
        nano \
        neovim \
-       postgresql-client \
        procps \
        pv \
        pypy3 \
@@ -72,12 +73,18 @@ Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
        7zip \
        git \
        git-lfs \
+    && curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor \
+       | tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg >/dev/null \
+    && echo 'deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main 14' \
+       > /etc/apt/sources.list.d/pgdg.list \
     && curl -fsSL --create-dirs --output /usr/share/keyrings/githubcli-archive-keyring.gpg \
        https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
        > /etc/apt/sources.list.d/github-cli.list \
     && eatmydata apt-get update \
-    && eatmydata apt-get install -y --no-install-recommends gh \
+    && eatmydata apt-get install -y --no-install-recommends \
+       gh \
+       postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp
