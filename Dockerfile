@@ -1,6 +1,7 @@
 # =================================================================
 #
-# Author: Joost van Ulden <joost.vanulden@canada.ca>
+# Authors: Joost van Ulden <joost.vanulden@canada.ca>
+#          Anthony Fok <anthony.fok@canada.ca>
 #
 # Copyright (c) 2020-2022 Government of Canada
 #
@@ -27,52 +28,26 @@
 #
 # =================================================================
 
-FROM debian:sid-20201012-slim
+FROM debian:bullseye-slim
 
 LABEL org.opencontainers.image.authors="Joost van Ulden <joost.vanulden@canada.ca>, Anthony Fok <anthony.fok@canada.ca>"
 LABEL org.opencontainers.image.source="https://github.com/opendrr/python-env"
-LABEL org.opencontainers.image.version="1.2.4"
+LABEL org.opencontainers.image.version="1.3.0"
 LABEL org.opencontainers.image.vendor="Government of Canada"
 LABEL org.opencontainers.image.licenses="MIT"
 
+# To use Debian Snapshot, prepend the following commands:
+#     echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/docker-snapshot.conf
+#     sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /' /etc/apt/sources.list
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/docker-snapshot.conf \
-    && sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /' /etc/apt/sources.list \
-    && echo 'deb http://deb.debian.org/debian bullseye main' >> /etc/apt/sources.list \
-    && echo 'deb http://deb.debian.org/debian bullseye-backports main' >> /etc/apt/sources.list \
-    && printf 'Package: *\n\
-Pin: release n=bullseye\n\
-Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
-    && cat /etc/apt/preferences.d/git-in-bullseye \
+RUN echo 'deb http://deb.debian.org/debian bullseye-backports main' >> /etc/apt/sources.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-       eatmydata \
-    && eatmydata apt-get install -y --no-install-recommends \
        ca-certificates \
        curl \
-       dos2unix \
-       gdal-bin \
+       eatmydata \
        gpg \
-       jq \
-       moreutils \
-       nano \
-       neovim \
-       procps \
-       pv \
-       pypy3 \
-       python3-numpy \
-       python3-pandas \
-       python3-psycopg2 \
-       python3-psycopg2cffi \
-       python3-requests \
-       python3-sqlalchemy \
-       python3-pip \
-       time \
-       xz-utils \
-    && eatmydata apt-get install -y --no-install-recommends -t bullseye-backports \
-       7zip \
-       git \
-       git-lfs \
     && curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor \
        | tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg >/dev/null \
     && echo 'deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main 14' \
@@ -82,9 +57,31 @@ Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
        > /etc/apt/sources.list.d/github-cli.list \
     && eatmydata apt-get update \
-    && eatmydata apt-get install -y --no-install-recommends \
+    && eatmydata apt-get install -t bullseye-backports -y --no-install-recommends \
+       7zip \
+       dos2unix \
+       gdal-bin \
+       git \
+       git-lfs \
        gh \
+       jq \
+       moreutils \
+       nano \
+       neovim \
        postgresql-client \
+       procps \
+       pv \
+       pypy3 \
+       python3-elasticsearch \
+       python3-numpy \
+       python3-pandas \
+       python3-psycopg2 \
+       python3-psycopg2cffi \
+       python3-requests \
+       python3-sqlalchemy \
+       python3-pip \
+       time \
+       xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp

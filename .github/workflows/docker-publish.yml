@@ -11,7 +11,7 @@ on:
     #schedule:
     #  - cron: '34 11 * * *'
     branches:
-      - master                # Currently tracking debian-sid-20201012
+      - master                # Currently debian-bullseye
       - debian-sid-20201012   # Python 3.8.6 (Debian during bullseye development cycle)
       - debian-bullseye       # Python 3.9.2 (Debian 11)
       - debian-bookworm       # Python 3.10.6 (Debian 12 in development)

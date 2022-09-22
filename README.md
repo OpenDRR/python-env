@@ -9,18 +9,24 @@ tailored for the OpenDRR/opendrr-api stack build process.
 
 Existing versions/branches:
 
-* v1.0: Python 3.8.5, based on debian:sid-20200720-slim (between Debian 10 and Debian 11, `opendrr/python-env:1.0`)
-* v1.0.3: Python 3.8.5, based on debian:sid-20200720-slim (between Debian 10 and Debian 11, `ghcr.io/opendrr/python-env:1.0.3`)
-* v1.1.0: Python 3.8.6, based on debian:sid-20201012-slim (between Debian 10 and Debian 11)
 * v1.2.x, `latest` (stable): Python 3.8.6, Elasticsearch 7.16, based on debian:sid-20201012-slim, with the use of requirements.txt restored
-  * `debian-sid-20201012` branch, also the `master` branch currently
-* v1.3.x (dev): Python 3.9.2, Elasticsearch 7.17, based on debian:bullseye-slim (Debian 11, released August 2022)
-  * `debian-bullseye` branch
+  * `debian-sid-20201012` branch
+  * Image: `ghcr.io/opendrr/python-env:1.2.4`
 
-Planned branches/versions:
+* v1.3.x (dev): Python 3.9.2, Elasticsearch 7.17, based on debian:bullseye-slim (Debian 11, released August 2022)
+  * `debian-bullseye` branch, also the current `master` branch
+  * Image: `ghcr.io/opendrr/python-env:1.3.0`, `ghcr.io/opendrr/python-env:debian-bullseye`, `ghcr.io/opendrr/python-env:edge`
+
+Planned future branch/versions:
 
 * v1.4.x (dev): Python 3.10.x, Elasticsearch 8.x, based on debian:bookworm-slim (Debian 12, expected to be released in mid-2023)
   * `debian-bookworm` branch
+
+Previous versions:
+
+* v1.1.0: Python 3.8.6, based on debian:sid-20201012-slim (between Debian 10 and Debian 11)
+* v1.0.3: Python 3.8.5, based on debian:sid-20200720-slim (between Debian 10 and Debian 11, `ghcr.io/opendrr/python-env:1.0.3`)
+* v1.0: Python 3.8.5, based on debian:sid-20200720-slim (between Debian 10 and Debian 11, `opendrr/python-env:1.0`)
 
 ## Updating ghcr.io/opendrr/python-env:edge (for testing)
 
