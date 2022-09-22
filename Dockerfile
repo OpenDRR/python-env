@@ -28,11 +28,11 @@
 #
 # =================================================================
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-20220912-slim
 
 LABEL org.opencontainers.image.authors="Joost van Ulden <joost.vanulden@canada.ca>, Anthony Fok <anthony.fok@canada.ca>"
 LABEL org.opencontainers.image.source="https://github.com/opendrr/python-env"
-LABEL org.opencontainers.image.version="1.3.0"
+LABEL org.opencontainers.image.version="1.4.0"
 LABEL org.opencontainers.image.vendor="Government of Canada"
 LABEL org.opencontainers.image.licenses="MIT"
 
@@ -41,8 +41,7 @@ LABEL org.opencontainers.image.licenses="MIT"
 #     sed -i '/snapshot.debian.org/s/^# //; /deb.debian.org/s/^/# /' /etc/apt/sources.list
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN echo 'deb http://deb.debian.org/debian bullseye-backports main' >> /etc/apt/sources.list \
-    && apt-get update \
+RUN apt-get update \
     && apt-get install -y --no-install-recommends \
        ca-certificates \
        curl \
@@ -50,14 +49,14 @@ RUN echo 'deb http://deb.debian.org/debian bullseye-backports main' >> /etc/apt/
        gpg \
     && curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor \
        | tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg >/dev/null \
-    && echo 'deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main 14' \
+    && echo 'deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main 14' \
        > /etc/apt/sources.list.d/pgdg.list \
     && curl -fsSL --create-dirs --output /usr/share/keyrings/githubcli-archive-keyring.gpg \
        https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
        > /etc/apt/sources.list.d/github-cli.list \
     && eatmydata apt-get update \
-    && eatmydata apt-get install -t bullseye-backports -y --no-install-recommends \
+    && eatmydata apt-get install -y --no-install-recommends \
        7zip \
        dos2unix \
        gdal-bin \
@@ -84,7 +83,8 @@ RUN echo 'deb http://deb.debian.org/debian bullseye-backports main' >> /etc/apt/
        xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt /tmp
-RUN pip3 install --no-cache-dir --requirement /tmp/requirements.txt
+# Uncomment the following lines before release:
+#COPY requirements.txt /tmp
+#RUN pip3 install --no-cache-dir --requirement /tmp/requirements.txt
 
 ENV PYTHONUNBUFFERED 1
