@@ -4,7 +4,7 @@ chardet==4.0.0
 elasticsearch==7.17.5
 GDAL==3.2.2
 idna==2.10
-numpy==1.19.5
+numpy==1.23.5
 pandas==1.1.5
 ply==3.11
 psycopg2==2.9.3
