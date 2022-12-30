@@ -31,7 +31,7 @@ FROM debian:sid-20201012-slim
 
 LABEL org.opencontainers.image.authors="Joost van Ulden <joost.vanulden@canada.ca>, Anthony Fok <anthony.fok@canada.ca>"
 LABEL org.opencontainers.image.source="https://github.com/opendrr/python-env"
-LABEL org.opencontainers.image.version="1.2.4"
+LABEL org.opencontainers.image.version="1.2.5"
 LABEL org.opencontainers.image.vendor="Government of Canada"
 LABEL org.opencontainers.image.licenses="MIT"
 
@@ -75,7 +75,7 @@ Pin-Priority: 50' > /etc/apt/preferences.d/git-in-bullseye \
        git-lfs \
     && curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor \
        | tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg >/dev/null \
-    && echo 'deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main 14' \
+    && echo 'deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main 15' \
        > /etc/apt/sources.list.d/pgdg.list \
     && curl -fsSL --create-dirs --output /usr/share/keyrings/githubcli-archive-keyring.gpg \
        https://cli.github.com/packages/githubcli-archive-keyring.gpg \
