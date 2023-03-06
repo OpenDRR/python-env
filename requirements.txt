@@ -8,7 +8,7 @@ numpy==1.19.2
 pandas==1.0.5
 ply==3.11
 psycopg2==2.8.5
-psycopg2cffi==2.8.1
+psycopg2cffi==2.9.0
 pycparser==2.20
 python-dateutil==2.8.1
 pytz==2020.1
